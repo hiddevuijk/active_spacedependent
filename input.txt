@@ -1,7 +1,7 @@
 dt = 1e-4
 vs = 10.
 alpha = 0
-omega = 1.
+omegaI = 1.
 D = 1.
 Dr = 0.5
 L = 10.

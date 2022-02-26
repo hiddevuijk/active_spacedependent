@@ -22,7 +22,7 @@
 
 class System {
  public:
-  System(double dt, double vs, double alpha, double omega, double D, double Dr, double L, int seed);
+  System(double dt, double vs, double alpha, double omega, double D, double Dr, int seed);
    
   // evolve in time
   void integrate(double t);
@@ -37,7 +37,6 @@ class System {
   // set all positions of the particles to 
   void randomOrientation();
   void normalizeOrientation();
-  void backInBox();
 
 
   // single time step
@@ -50,7 +49,6 @@ class System {
   double omega_; // period
   double D_; // diffusion constant
   double Dr_;// rotational diffusion constant
-  double L_; // systemsize
 
   Vec3 position_;
   Vec3 orientation_;
@@ -60,8 +58,8 @@ class System {
   boost::variate_generator<boost::mt19937&, boost::normal_distribution<double> > rndist;
 };
 
-System::System(double dt, double vs, double alpha, double omega, double D, double Dr, double L, int seed)
-    : dt_(dt), vs_(vs), alpha_(alpha), omega_(omega), D_(D), Dr_(Dr), L_(L),
+System::System(double dt, double vs, double alpha, double omega, double D, double Dr, int seed)
+    : dt_(dt), vs_(vs), alpha_(alpha), omega_(omega), D_(D), Dr_(Dr),
 	  position_(), orientation_(),
       ndist(0., 1.), rng(seed), rndist(rng, ndist) 
 { randomOrientation(); };
@@ -84,7 +82,6 @@ void System::step(double dt)
   position_.y += sqrt(2 * dt * D_) * rndist();
   position_.z += sqrt(2 * dt * D_) * rndist();
 
-  backInBox();
  
   Vec3 dp(0, 0, 0);
   Vec3 eta(rndist(), rndist(), rndist());
@@ -132,11 +129,6 @@ void System::normalizeOrientation()
 
 	orientation_ /= sqrt(l);
 
-}
-
-void System::backInBox()
-{
-	// put the particle back in the box
 }
 
 
