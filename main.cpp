@@ -2,6 +2,7 @@
 #include "configFile.h"
 #include "vec3.h"
 #include "system.h"
+#include "density.h"
 
 
 #include <iostream>
@@ -22,25 +23,32 @@ int main()
   double L      = config.read<double>("L");
   long int seed = config.read<long int>("seed");
 
-  double totalTime = config.read<double>("totalTime");
+  double totalTime    = config.read<double>("totalTime");
+  double tEquilibrate = config.read<double>("tEquilibrate");
 
-  int ntime = config.read<int>("ntime");
   double sampleDt = config.read<double>("sampleDt");
+
+  unsigned int nbin = config.read<unsigned int>("nbin");
 
   double omega = 4 * acos(0.0) * omegaI / L;
 
   System system(dt, vs, alpha, omega, D, Dr, seed);
 
+  Density density(nbin, L);
 
+  system.integrate(tEquilibrate);
   double time = 0;
   while( time < totalTime) {
 
 
 	system.integrate(sampleDt);
-
+	density.sample( system.getPositionX() );
 	
 	time += sampleDt;
   }
+
+  density.write("rho.dat");
+  
 
 
   return 0;

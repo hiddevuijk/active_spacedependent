@@ -1,13 +1,14 @@
-dt = 1e-4
-vs = 10.
+dt = 1e-2
+vs = 1.
 alpha = 0
 omegaI = 1.
 D = 1.
-Dr = 0.5
+Dr = 1.
 L = 10.
 seed = 123456789
 
-totalTime = 1000
+totalTime = 5000000
+tEquilibrate = 10.
+sampleDt = 0.5
 
-ntime = 30000
-sampleDt = 0.01
+nbin = 100
